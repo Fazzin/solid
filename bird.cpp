@@ -1,24 +1,30 @@
 #include <iostream>
+#include <string>
 
 class Bird {
 public:
-    virtual void fly() {
-        std::cout << "Bird is flying\n";
-    };
+    explicit Bird(std::string name) : name_(std::move(name)) {}
     
-    virtual void lay_egg() {
-        std::cout << "Egg";
+    void lay_egg() const {
+        std::cout << name_ << " is laying an Egg.\n";
     }
+    const std::string& name() const { return name_;}
+private:
+    std::string name_;
 };
 
 class Ostrich : public Bird {
 public:
-    void fly() override {
-        throw std::runtime_error("Ostriches can't fly!");
-    }
+    Ostrich() : Bird("Ostrich") {}
 };
 
-class Eagle: public Bird {};
+class Eagle: public Bird {
+    public:
+        Eagle() : Bird("Eagle") {}
+        void fly() const {
+            std::cout << name() << " flys insanely fast.\n";
+        }
+};
 
 // For demonstration
 int main() {
@@ -29,5 +35,4 @@ int main() {
     eagle.fly();
 
     ostrich.lay_egg();
-    ostrich.fly();
 }
